@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.npm
+.yarn/
+
+# Production & Build Outputs
+dist/
+.next/
+out/
+build/
+coverage/
+
+# Next.js & Turbo cache
+.turbo/
+.cache/
+
+# Hardhat & Smart Contracts artifacts
+contracts/artifacts/
+contracts/cache/
+contracts/typechain-types/
+
+# Environment files (DO NOT COMMIT SECRETS)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+!.env.example
+
+# Database & SQLite files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+backend/prisma/*.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Operating System & Editor Files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
