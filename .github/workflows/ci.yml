@@ -1,0 +1,70 @@
+name: ParcelNode Enterprise CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint-and-test:
+    name: Lint, Test & Build Stack
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: parcelnode
+          POSTGRES_PASSWORD: parcelnode_secret
+          POSTGRES_DB: parcelnode_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install pnpm Package Manager
+        run: npm install -g pnpm
+
+      - name: Install Monorepo Dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Smart Contracts Compilation & Tests
+        run: |
+          cd contracts
+          pnpm run compile
+          pnpm run test
+
+      - name: Backend Build & Unit Tests
+        run: |
+          cd backend
+          pnpm run prisma:generate
+          pnpm run build
+
+      - name: Frontend Next.js Build Check
+        run: |
+          cd frontend
+          pnpm run build
