@@ -1,0 +1,23 @@
+{
+  "name": "parcelnode-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise-grade multi-carrier shipping API aggregator & Web3 audit ledger monorepo",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "contracts:compile": "pnpm --filter contracts compile",
+    "contracts:test": "pnpm --filter contracts test",
+    "backend:dev": "pnpm --filter backend start:dev",
+    "frontend:dev": "pnpm --filter frontend dev"
+  },
+  "devDependencies": {
+    "turbo": "^1.13.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
