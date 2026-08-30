@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Merchant {
+  id           String     @id @default(uuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  role         String     @default("MERCHANT") // MERCHANT | ADMIN
+  status       String     @default("ACTIVE")   // ACTIVE | SUSPENDED
+  orders       Order[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Order {
+  id          String     @id @default(uuid())
+  merchant    Merchant   @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  merchantId  String
+  item        String
+  weightKg    Float
+  destination String
+  shipment    Shipment?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Shipment {
+  id             String          @id @default(uuid())
+  order          Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId        String          @unique
+  carrier        String
+  trackingId     String          @unique
+  status         String          // PENDING | PICKED_UP | IN_TRANSIT | OUT_FOR_DELIVERY | DELIVERED | FAILED
+  trackingEvents TrackingEvent[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model TrackingEvent {
+  id          String    @id @default(uuid())
+  shipment    Shipment  @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  shipmentId  String
+  status      String
+  location    String
+  timestamp   DateTime
+  dedupeKey   String    @unique
+  batch       Batch?    @relation(fields: [batchId], references: [id])
+  batchId     String?
+  leafHash    String?   // this event's leaf in the merkle tree
+  chainStatus String    @default("NONE") // NONE | PENDING | BATCHED | CONFIRMED | FAILED
+  createdAt   DateTime  @default(now())
+}
+
+model Batch {
+  id             String          @id @default(uuid())
+  merkleRoot     String
+  txHash         String?
+  submittedAt    DateTime?
+  confirmedAt    DateTime?
+  attestation1   String?         // signature 1 (primary server oracle)
+  attestation2   String?         // signature 2 (secondary attestor)
+  status         String          @default("ACCUMULATING") // ACCUMULATING | SUBMITTED | CONFIRMED | FAILED
+  events         TrackingEvent[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  action      String
+  detail      String
+  performedBy String
+  timestamp   DateTime @default(now())
+}
+
