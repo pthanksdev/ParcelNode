@@ -1,0 +1,55 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "Queue Depth (BullMQ)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "parcelnode_queue_depth",
+          "legendFormat": "{{queue_name}}"
+        }
+      ]
+    },
+    {
+      "title": "Batch Accumulator Size",
+      "type": "histogram",
+      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 0 },
+      "targets": [
+        {
+          "expr": "rate(parcelnode_batch_accumulator_size_bucket[5m])",
+          "legendFormat": "le {{le}}"
+        }
+      ]
+    },
+    {
+      "title": "Chain Confirmation Latency (seconds)",
+      "type": "graph",
+      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 0 },
+      "targets": [
+        {
+          "expr": "rate(parcelnode_chain_confirmation_latency_seconds_sum[5m]) / rate(parcelnode_chain_confirmation_latency_seconds_count[5m])",
+          "legendFormat": "Avg Latency"
+        }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["parcelnode", "metrics"],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "title": "ParcelNode System Operational Metrics"
+}
