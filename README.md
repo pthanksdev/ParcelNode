@@ -258,13 +258,40 @@ cd frontend && npm run build
 ```
 
 ### Order of Execution Summary
- ```mermaid
-    graph TD
-    A[1. Push code to GitHub] --> B[2. Create Render Postgres DB]
-    B --> C[3. Deploy Smart Contract to Sepolia]
-    C --> D[4. Create Render Web Service for backend/]
-    D --> E[5. Deploy Vercel App for frontend/]
-    E --> F[🎉 Live Application Ready!]
+```mermaid
+graph TD
+    subgraph Foundation[1. Foundation]
+        A[Push code to GitHub]
+        B[Create Render Postgres DB]
+    end
+
+    subgraph Blockchain[2. Blockchain]
+        C[Deploy Smart Contract to Sepolia]
+        D[Record deployed contract address + ABI]
+    end
+
+    subgraph Backend[3. Backend API]
+        E[Configure backend env vars]
+        F[Create Render web service for backend/]
+        G[Run database migrations and start API]
+    end
+
+    subgraph Frontend[4. Frontend App]
+        H[Deploy Vercel app for frontend/]
+        I[Connect frontend to backend API]
+    end
+
+    J[Live Application Ready!]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I --> J
 ```
 ---
 
