@@ -297,4 +297,4 @@ graph TD
 
 ## License & Open Source
 
-This repository is open source and available under the [MIT License](LICENSE).
+This repository is open source and available under the [MIT License](MITLICENSE).
