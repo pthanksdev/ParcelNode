@@ -12,7 +12,7 @@
 
 ---
 
-## 🎯 Executive Summary & Core Value Proposition
+## Executive Summary & Core Value Proposition
 
 In traditional e-commerce logistics, package delivery disputes between merchants, carriers, and buyers cost millions annually due to lost tracking histories, modified database records, or unverified claims.
 
@@ -24,7 +24,7 @@ In traditional e-commerce logistics, package delivery disputes between merchants
 
 ---
 
-## 👥 Platform User Roles & Workflow
+## Platform User Roles & Workflow
 
 ```
                                  +------------------------+
@@ -55,18 +55,18 @@ In traditional e-commerce logistics, package delivery disputes between merchants
                                  +------------------------+
 ```
 
-### 1. 🏬 Merchants (Store Owners & Sellers)
+### 1. Merchants (Store Owners & Sellers)
 - **Account Dashboard**: Log in securely using JWT tokens to view real-time shipping analytics, active orders, and revenue metrics.
 - **Shipment Management**: Create orders, dispatch shipments, compare live carrier rates, and track progress.
 - **Webhook Integration**: Receive real-time push notifications at custom HTTP webhook endpoints.
 - **Proof Downloads**: Download JSON cryptographic Merkle proofs for delivered packages to settle disputes.
 
-### 2. 📦 End Recipients (Customers / Buyers)
+### 2. End Recipients (Customers / Buyers)
 - **Frictionless Public Tracking**: Access public tracking pages (`/track/:trackingId`) with **zero login or registration required**.
 - **Live Status & Visual Timelines**: View real-time location history, status changes (`PICKED_UP`, `IN_TRANSIT`, `DELIVERED`), and carrier details.
 - **On-Chain Audit Badge**: View verified green badges demonstrating that package delivery was anchored on Ethereum.
 
-### 3. 🛡️ Super Admin (Platform Operator)
+### 3. Super Admin (Platform Operator)
 - **Merchant Governance**: Monitor all registered merchants, view shipment volumes, and manage merchant account statuses (`ACTIVE` or `SUSPENDED`).
 - **Batch Management & Overrides**: Manually trigger Merkle tree accumulation cycles on demand.
 - **Circuit Breaker**: Pause or resume global blockchain batch submissions during gas spikes or network congestion.
@@ -74,11 +74,11 @@ In traditional e-commerce logistics, package delivery disputes between merchants
 
 ---
 
-## 📁 Full-Stack Modular Architecture
+## Full-Stack Modular Architecture
 
 Both the **Frontend** and **Backend** follow Domain-Driven Design (DDD) principles with absolute `@/*` import path aliases.
 
-### 🌐 Frontend Domain Layout (`frontend/`)
+### Frontend Domain Layout (`frontend/`)
 
 ```
 frontend/
@@ -114,7 +114,7 @@ frontend/
     └── utils.ts                     # Shared Formatting & Crypto Helpers
 ```
 
-### ⚡ Backend Domain Layout (`backend/`)
+### Backend Domain Layout (`backend/`)
 
 ```
 backend/
@@ -143,7 +143,7 @@ backend/
 
 ---
 
-## 🔐 Web3 Cryptography & Merkle Tree Batching
+## Web3 Cryptography & Merkle Tree Batching
 
 ### Leaf Hash Formula
 Every `DELIVERED` tracking event is hashed into a 32-byte leaf digest using Solidity-compatible Keccak-256:
@@ -158,7 +158,7 @@ $$\text{Leaf} = \text{Keccak256}(\text{shipmentId}, \text{trackingId}, \text{sta
 
 ---
 
-## 📊 REST API Specifications
+## REST API Specifications
 
 The backend provides interactive OpenAPI / Swagger documentation at `http://localhost:3001/api/docs`.
 
@@ -180,7 +180,7 @@ The backend provides interactive OpenAPI / Swagger documentation at `http://loca
 
 ---
 
-## ⚙️ Environment Configuration
+## Environment Configuration
 
 Copy `.env.example` to `.env` in the root directory:
 
@@ -205,7 +205,7 @@ PORT=3001
 
 ---
 
-## 🛠️ Quick Start & Local Execution
+## Quick Start & Local Execution
 
 ### 1. Start Infrastructure Containers
 ```bash
@@ -240,7 +240,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🧪 Verification & Automated Testing
+## Verification & Automated Testing
 
 ### Smart Contract Tests
 ```bash
@@ -257,8 +257,17 @@ cd backend && npm test
 cd frontend && npm run build
 ```
 
+### Order of Execution Summary
+ ```mermaid
+    graph TD
+    A[1. Push code to GitHub] --> B[2. Create Render Postgres DB]
+    B --> C[3. Deploy Smart Contract to Sepolia]
+    C --> D[4. Create Render Web Service for backend/]
+    D --> E[5. Deploy Vercel App for frontend/]
+    E --> F[🎉 Live Application Ready!]
+```
 ---
 
-## ⚖️ License & Open Source
+## License & Open Source
 
 This repository is open source and available under the [MIT License](LICENSE).
